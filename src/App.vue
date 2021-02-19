@@ -4,7 +4,12 @@
       <div class="todo-wrap">
         <todo-header @addItem="addItem"></todo-header>
         <todo-list :todolist="todoList"></todo-list>
-        <todo-footer></todo-footer>
+        <todo-footer 
+          :todolist="todoList" 
+          @footerChecked="footerChecked"
+          @deleteCheckedAll="deleteCheckedAll"
+        >
+        </todo-footer>
       </div>
     </div>
   </div>
@@ -32,12 +37,32 @@ export default {
         if(item.key === key) item.checked = value
       })
     },
+    //该方法用于添加每一个代办事项
     addItem(item){
       this.todoList.unshift(item)
+    },
+    //该方法用于删除每一个代办事项
+    deleteItem(key){
+      this.todoList = this.todoList.filter((item)=>{
+        return item.key !== key
+      })
+    },
+    //实现todo-footer组件中,复选框选中后 todo-list组件中每一项都选中，反之footer勾除，list也要都勾除
+    footerChecked(flag){
+      this.todoList.forEach((item)=>{
+        item.checked = flag
+      })
+    },
+    //用于清除所有已完成任务
+    deleteCheckedAll(){
+      this.todoList = this.todoList.filter((item)=>{
+        return item.checked === false
+      })
     }
   },
   mounted(){
     this.bus.$on('checked',this.checked)
+    this.bus.$on('deleteItem',this.deleteItem)
   },
   components:{
     "todo-header":todoHeader,

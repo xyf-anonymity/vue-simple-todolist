@@ -25,9 +25,6 @@ export default {
     components:{
         "list-item":listItem
     },
-    mounted(){
-        console.log(this.todolist)
-    }
 }
 </script>
 

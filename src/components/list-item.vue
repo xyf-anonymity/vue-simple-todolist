@@ -8,7 +8,14 @@
         <input type="checkbox" v-model="ischecked" />
         <span> {{item.text}}</span>
         </label>
-        <button class="btn btn-danger" :class={display:highlight}>删除</button>
+        <button 
+            class="btn btn-danger" 
+            :class={display:highlight}
+            @click="deleteItem"
+        >
+         <!-- :style="{display:highlight?'block':'none'}" -->
+            删除
+        </button>
     </li>
 </template>
 
@@ -31,6 +38,11 @@ export default {
             set(value){
                 this.bus.$emit('checked',value,this.item.key) 
             }
+        }
+    },
+    methods:{
+        deleteItem(){
+            this.bus.$emit('deleteItem',this.item.key)
         }
     }
 }
