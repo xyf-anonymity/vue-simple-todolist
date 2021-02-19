@@ -9,7 +9,7 @@
 </template>
 
 <script>
-var key = 3
+import storage from '../utile/storage'
 export default {
     name:'v-header',
     data(){
@@ -19,9 +19,11 @@ export default {
     },
     methods:{
         collectItem(){
-            let item = {key:key++,text:this.text,checked:false}
+            let id = storage.get('id',0)
+            let item = {id,text:this.text,checked:false}
             this.$emit('addItem',item),
-            this.text = ''
+            this.text = '',
+            storage.set('id',id + 1)  //保证每新增一项待办任务的id都是唯一
         }
     }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="todo-footer">
         <label>
-          <input type="checkbox" v-model="checkedAll" />
+          <input type="checkbox" v-model="checkedAll" :style="{display:flag?'none':'block'}" />
         </label>
         <span>
           <span>已完成 <i style="color:green">{{achievedItemNum}}</i></span> / 全部 <i style="color:red">{{todolist.length}}</i>
@@ -16,6 +16,11 @@ export default {
   props:{
     todolist:Array,
   },
+  data(){
+    return {
+      flag:false
+    }
+  },
   computed:{
     achievedItemNum(){
       return this.todolist.reduce((accumulator,item)=>{
@@ -25,6 +30,7 @@ export default {
     checkedAll:{
       get(){
         let flag = this.achievedItemNum === 0 && this.todolist.length === 0
+        this.flag = flag
         return (this.achievedItemNum === this.todolist.length) && !flag
       },
       set(value){

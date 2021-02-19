@@ -36,13 +36,13 @@ export default {
                 return this.item.checked
             },
             set(value){
-                this.bus.$emit('checked',value,this.item.key) 
+                this.bus.$emit('checked',value,this.item.id) 
             }
         }
     },
     methods:{
         deleteItem(){
-            this.bus.$emit('deleteItem',this.item.key)
+            this.bus.$emit('deleteItem',this.item.id)
         }
     }
 }

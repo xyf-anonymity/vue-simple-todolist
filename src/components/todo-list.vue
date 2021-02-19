@@ -1,15 +1,14 @@
 <template>
     <ul class="todo-main">
         <list-item  
-            v-for="item 
-            in todolist" 
-            :key="item.key" 
+            v-for="item in todolist" 
+            :key="item.id" 
             :item="item"
         >
         </list-item>
     </ul>
 </template>
-
+id
 <script>
 import listItem from './list-item'
 export default {

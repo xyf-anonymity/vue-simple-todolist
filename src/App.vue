@@ -19,22 +19,19 @@
 import todoHeader from './components/todo-header'
 import todoList from './components/todo-list'
 import todoFooter from './components/todo-footer' 
+import storage from './utile/storage'
 export default {
   name: 'App',
   data(){
     return {
-      todoList:[
-        {key:0,text:'吃饭',checked:false},
-        {key:1,text:'睡觉',checked:false},
-        {key:2,text:'打王者',checked:false},
-      ]
+      todoList:[]
     }
   },
   methods:{
     //该方法用于当选中todolist中事项的复选框时，修改App组件中的数据
-    checked(value,key){
+    checked(value,id){
       this.todoList.forEach((item)=>{
-        if(item.key === key) item.checked = value
+        if(item.id === id) item.checked = value
       })
     },
     //该方法用于添加每一个代办事项
@@ -42,9 +39,9 @@ export default {
       this.todoList.unshift(item)
     },
     //该方法用于删除每一个代办事项
-    deleteItem(key){
+    deleteItem(id){
       this.todoList = this.todoList.filter((item)=>{
-        return item.key !== key
+        return item.id !== id
       })
     },
     //实现todo-footer组件中,复选框选中后 todo-list组件中每一项都选中，反之footer勾除，list也要都勾除
@@ -63,6 +60,16 @@ export default {
   mounted(){
     this.bus.$on('checked',this.checked)
     this.bus.$on('deleteItem',this.deleteItem)
+    //组件一挂载后就向浏览器的localStorage上拿取数据存入data中 拿不到则返回[]
+    this.todoList = storage.get('todoList',[])
+  },
+  watch:{
+    todoList:{
+      handler(value){  // 只有data数据中发生了变化 就调用 handler 函数 把变化后的数据存入 localStorage中
+        storage.set('todoList',value)
+      },
+      deep:true //深度监听数据data的变化
+    }
   },
   components:{
     "todo-header":todoHeader,
